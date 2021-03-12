@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "lifespanInHours",
+      "type": "java.lang.String",
+      "description": "The time in Hours before the token expires."
+    },
+    {
+      "name": "keyForJwtTokens",
+      "type": "java.lang.String",
+      "description": "Secret for Generating JWT tokens."
+    },
+    {
+      "name": "tokenServerUrl",
+      "type": "java.lang.String",
+      "description": "Agora Token Server URL."
+    }
+  ] }
