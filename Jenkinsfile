@@ -5,7 +5,7 @@ pipeline{
         stage('Build'){
             steps{
                 withMaven{
-                    sh 'mvn clean package'
+                    sh 'mvn clean package --DskipTests'
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline{
             steps{
                 sh '''
                         docker-compose -f /opt/bt-backend/docker-compose.yml down || true
-                        docker image rm bt-backend
+                        docker image rm bt-backend || true
                         docker build -t bt-backend .
                         docker-compose -f /opt/bt-backend/docker-compose.yml up -d
                 '''
