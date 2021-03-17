@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bachelors-thesis
+    username: postgres
+    password: admin
+tokenServerUrl: "http://localhost:19575"

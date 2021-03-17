@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @ComponentScan({"leo.bachelorsthesis.backend.config"})
-@Import({JPAConfig.class})
-@PropertySources({@PropertySource(value = "classpath:local/db.properties")})
 public class AppConfig {
 
     @Value("${tokenServerUrl}")
