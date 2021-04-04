@@ -16,4 +16,8 @@ public interface RoomService {
     boolean joinRoom(String id);
 
     Set<Room> getActiveRooms();
+
+    boolean deleteRoom(String id);
+
+    boolean leaveRoom(String id);
 }

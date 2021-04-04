@@ -82,4 +82,32 @@ public class RoomController {
         logger.info("get my rooms done: {}", response);
         return response;
     }
+
+    @DeleteMapping("/{id}")
+    public GeneralResponse deleteRoom(@PathVariable String id){
+        GeneralResponse response = new GeneralResponse();
+        logger.info("received delete room request: {}", id);
+
+        response.setMessage(
+                roomService.deleteRoom(id) ?
+                        RoomConstants.ROOM_DELETED : RoomConstants.ROOM_NOT_DELETED
+        );
+
+        logger.info("get my rooms done: {}", response);
+        return response;
+    }
+
+    @DeleteMapping("/{id}/leave")
+    public GeneralResponse leaveRoom(@PathVariable String id){
+        GeneralResponse response = new GeneralResponse();
+        logger.info("received delete room request: {}", id);
+
+        response.setMessage(
+                roomService.leaveRoom(id) ?
+                        RoomConstants.ROOM_LEFT : RoomConstants.ROOM_NOT_LEFT
+        );
+
+        logger.info("get my rooms done: {}", response);
+        return response;
+    }
 }

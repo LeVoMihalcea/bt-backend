@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -73,9 +74,46 @@ public class RoomServiceImpl implements RoomService {
         return rooms;
     }
 
+    @Override
+    public boolean deleteRoom(String id) {
+        User user = getUser();
+
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new RoomNotFoundException(RoomConstants.ROOM_NOT_FOUND);
+                });
+
+        if (room.getHost().equals(user)) {
+            roomRepository.delete(room);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean leaveRoom(String id) {
+        User user = getUser();
+
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new RoomNotFoundException(RoomConstants.ROOM_NOT_FOUND);
+                });
+
+        if (!room.getHost().equals(user)) {
+            room.setUsers(room.getUsers().stream()
+                    .filter(roomUser -> !roomUser.equals(user))
+                    .collect(Collectors.toSet()));
+            roomRepository.save(room);
+            return true;
+        }
+        return false;
+    }
+
     private User getUser() {
         Authentication loggedInUserDetails = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(loggedInUserDetails.getName())
-                .orElseThrow(() -> {throw new UserNotFoundException(UserConstants.USER_NOT_FOUND);});
+                .orElseThrow(() -> {
+                    throw new UserNotFoundException(UserConstants.USER_NOT_FOUND);
+                });
     }
 }
