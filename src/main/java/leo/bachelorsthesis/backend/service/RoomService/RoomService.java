@@ -20,4 +20,6 @@ public interface RoomService {
     boolean deleteRoom(String id);
 
     boolean leaveRoom(String id);
+
+    Room getRoomById(String id);
 }

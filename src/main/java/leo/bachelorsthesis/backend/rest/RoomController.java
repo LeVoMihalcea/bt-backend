@@ -47,6 +47,17 @@ public class RoomController {
         return response;
     }
 
+    @GetMapping("/{id}")
+    public Room getRoomById(@PathVariable String id) {
+        Room response;
+        logger.info("received get room details request");
+
+        response = roomService.getRoomById(id);
+
+        logger.info("get room details done: {}", response);
+        return response;
+    }
+
     @GetMapping("/joined")
     public Set<Room> getJoinedRooms() {
         Set<Room> response;
@@ -93,21 +104,21 @@ public class RoomController {
                         RoomConstants.ROOM_DELETED : RoomConstants.ROOM_NOT_DELETED
         );
 
-        logger.info("get my rooms done: {}", response);
+        logger.info("delete room done: {}", response);
         return response;
     }
 
     @DeleteMapping("/{id}/leave")
     public GeneralResponse leaveRoom(@PathVariable String id){
         GeneralResponse response = new GeneralResponse();
-        logger.info("received delete room request: {}", id);
+        logger.info("received leave room request: {}", id);
 
         response.setMessage(
                 roomService.leaveRoom(id) ?
                         RoomConstants.ROOM_LEFT : RoomConstants.ROOM_NOT_LEFT
         );
 
-        logger.info("get my rooms done: {}", response);
+        logger.info("leave room done: {}", response);
         return response;
     }
 }

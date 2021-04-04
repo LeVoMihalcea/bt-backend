@@ -109,6 +109,14 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    @Override
+    public Room getRoomById(String id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new RoomNotFoundException(RoomConstants.ROOM_NOT_FOUND);
+                });
+    }
+
     private User getUser() {
         Authentication loggedInUserDetails = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(loggedInUserDetails.getName())
