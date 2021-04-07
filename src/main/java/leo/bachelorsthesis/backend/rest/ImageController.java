@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/image")
@@ -33,8 +30,8 @@ public class ImageController {
         List<String> response = new ArrayList<>();
         logger.info("received analyse picture request: {}", imageUri);
 
-        imageService.analysePicture(imageUri);
-        response.add("random message " + UUID.randomUUID());
+        Set<String> messages = imageService.analysePicture(imageUri);
+        response.add("random message " + messages);
 
         logger.info("analyse picture done: {}", response);
         return response;

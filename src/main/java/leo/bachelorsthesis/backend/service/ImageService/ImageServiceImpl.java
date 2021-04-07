@@ -19,6 +19,7 @@ public class ImageServiceImpl implements ImageService {
         Set<String> messages = new HashSet<>();
 
         String decodedImageName = decodeImage(imageUri);
+        messages.add(decodedImageName);
 
         return messages;
     }
