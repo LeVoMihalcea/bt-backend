@@ -31,7 +31,7 @@ public class ImageController {
         logger.info("received analyse picture request: {}", imageUri);
 
         Set<String> messages = imageService.analysePicture(imageUri);
-        response.add("random message " + messages);
+        response.add("random message " + messages.stream().findFirst());
 
         logger.info("analyse picture done: {}", response);
         return response;

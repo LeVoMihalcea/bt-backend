@@ -22,6 +22,9 @@ public class AppConfig {
     @Value("${tokenServerUrl}")
     private String tokenServerUrl;
 
+    @Value("${staticFilePath}")
+    private String staticFilePath;
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

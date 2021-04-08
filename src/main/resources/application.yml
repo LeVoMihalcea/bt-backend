@@ -26,4 +26,5 @@ spring:
       test-on-borrow: true
 lifespanInHours: 24
 secret: "some random string"
-tokenServerUrl: "http://bt-tokenizer:19575"
+tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
+staticFilePath: ""

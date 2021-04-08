@@ -14,5 +14,15 @@
       "name": "tokenServerUrl",
       "type": "java.lang.String",
       "description": "Agora Token Server URL."
+    },
+    {
+      "name": "secret",
+      "type": "java.lang.String",
+      "description": "Secret."
+    },
+    {
+      "name": "staticFilePath",
+      "type": "java.lang.String",
+      "description": "Static Image path."
     }
   ] }

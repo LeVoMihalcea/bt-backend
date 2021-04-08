@@ -4,3 +4,4 @@ spring:
     username: postgres
     password: admin
 tokenServerUrl: "http://localhost:19575"
+staticFilePath: "./src/main/resources/"
