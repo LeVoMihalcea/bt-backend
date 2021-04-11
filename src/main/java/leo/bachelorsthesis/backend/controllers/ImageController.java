@@ -1,4 +1,4 @@
-package leo.bachelorsthesis.backend.rest;
+package leo.bachelorsthesis.backend.controllers;
 
 import leo.bachelorsthesis.backend.service.ImageService.ImageService;
 import org.apache.commons.io.FileUtils;
@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -29,13 +29,13 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @PostMapping()
-    public List<String> analysePicture(@RequestBody String imageUri) {
-        List<String> response = new ArrayList<>();
-        logger.info("received analyse picture request: {}", imageUri);
+    @MessageMapping("/analyse")
+    @SendTo("/topic/AI-responses")
+    public String analysePicture(@RequestBody String imageUri) {
+        String response = "";
+        logger.info("received analyse picture request");
 
-        Set<String> messages = imageService.analysePicture(imageUri);
-        response.add("random message " + messages.stream().findFirst());
+        response = imageService.analysePicture(imageUri);
 
         logger.info("analyse picture done: {}", response);
         return response;

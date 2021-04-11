@@ -27,4 +27,5 @@ spring:
 lifespanInHours: 24
 secret: "some random string"
 tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
+empathyServerUrl: ""
 staticFilePath: ""

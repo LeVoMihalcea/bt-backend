@@ -1,9 +1,7 @@
-package leo.bachelorsthesis.backend.rest;
+package leo.bachelorsthesis.backend.controllers;
 
 import leo.bachelorsthesis.backend.constants.RoomConstants;
 import leo.bachelorsthesis.backend.domain.Room;
-import leo.bachelorsthesis.backend.domain.requests.GenerateRoomRequest;
-import leo.bachelorsthesis.backend.domain.requests.JoinRoomRequest;
 import leo.bachelorsthesis.backend.domain.responses.GeneralResponse;
 import leo.bachelorsthesis.backend.domain.responses.GenerateRoomResponse;
 import leo.bachelorsthesis.backend.service.RoomService.RoomService;

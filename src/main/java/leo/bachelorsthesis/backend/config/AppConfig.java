@@ -8,7 +8,7 @@ import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
 import leo.bachelorsthesis.backend.builders.DtoBuilder;
 import leo.bachelorsthesis.backend.clients.TokenClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import leo.bachelorsthesis.backend.clients.EmpathyClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -24,6 +24,9 @@ public class AppConfig {
 
     @Value("${staticFilePath}")
     private String staticFilePath;
+
+    @Value("${empathyServerUrl}")
+    private String empathyServerUrl;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -49,5 +52,16 @@ public class AppConfig {
                 .logger(new Slf4jLogger(TokenClient.class))
                 .logLevel(Logger.Level.FULL)
                 .target(TokenClient.class, tokenServerUrl);
+    }
+
+    @Bean
+    public EmpathyClient empathyClient() {
+        return Feign.builder()
+                .client(new OkHttpClient())
+                .encoder(new GsonEncoder())
+                .decoder(new GsonDecoder())
+                .logger(new Slf4jLogger(EmpathyClient.class))
+                .logLevel(Logger.Level.FULL)
+                .target(EmpathyClient.class, empathyServerUrl);
     }
 }

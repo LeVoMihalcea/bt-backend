@@ -1,10 +1,10 @@
 package leo.bachelorsthesis.backend.service.ImageService;
 
+import leo.bachelorsthesis.backend.builders.Mapper;
+import leo.bachelorsthesis.backend.domain.dtos.empathy.EmpathyResponseDTO;
+import leo.bachelorsthesis.backend.clients.EmpathyClient;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -23,14 +23,26 @@ public class ImageServiceImpl implements ImageService {
     @Value("${staticFilePath}")
     private String staticFilePath;
 
+    @Value("${backendServerUrl}")
+    private String backendServerUrl;
+
+    private final EmpathyClient empathyClient;
+
+    public ImageServiceImpl(EmpathyClient empathyClient) {
+        this.empathyClient = empathyClient;
+    }
+
     @Override
-    public Set<String> analysePicture(String imageUri) {
-        Set<String> messages = new HashSet<>();
+    public String analysePicture(String imageUri) {
+        String message = "";
 
         String decodedImageName = decodeImage(imageUri);
-        messages.add(decodedImageName);
+        EmpathyResponseDTO empathyResponseDTO =
+                empathyClient.sendImageToEmpathy(backendServerUrl + "/" + decodedImageName);
 
-        return messages;
+        message = Mapper.mapEmpathyResponseToJson(empathyResponseDTO);
+
+        return message;
     }
 
     @Override

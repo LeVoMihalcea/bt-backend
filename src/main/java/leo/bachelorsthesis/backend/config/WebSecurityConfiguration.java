@@ -51,6 +51,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/image/**").permitAll()
+                .antMatchers("/analyse").permitAll()
+                .antMatchers("/topic/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilter(new AuthenticationFilter(authenticationManager(), secret, hours, userService))
                 .addFilterBefore(new CorsConfigFilter(), AuthenticationFilter.class)
