@@ -18,7 +18,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/image")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class ImageController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
