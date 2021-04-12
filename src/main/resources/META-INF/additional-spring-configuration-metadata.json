@@ -29,6 +29,11 @@
       "name": "empathyServerUrl",
       "type": "java.lang.String",
       "description": "Empathy Server Url."
+    },
+    {
+      "name": "frontendUrl",
+      "type": "java.lang.String",
+      "description": "Webapp URL."
     }
   ]
 }

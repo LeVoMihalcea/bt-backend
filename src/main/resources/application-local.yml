@@ -8,6 +8,7 @@ backendServerUrl: "http://localhost:19580"
 staticFilePath: "images/"
 empathyServerUrl: "http://localhost:5000"
 frontendUrl: "http://localhost:4200"
+frontendUrlBackup: "http://localhost:4200"
 
 
 feign:
