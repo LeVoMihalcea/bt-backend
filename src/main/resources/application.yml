@@ -28,4 +28,5 @@ lifespanInHours: 24
 secret: "some random string"
 tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
 empathyServerUrl: "https://bt-empathy.sudo.rocks"
+backendServerUrl: "https://bt-backend.sudo.rocks"
 staticFilePath: ""
