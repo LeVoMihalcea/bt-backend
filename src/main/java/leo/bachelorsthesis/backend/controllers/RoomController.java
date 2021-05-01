@@ -67,8 +67,8 @@ public class RoomController {
     }
 
     @GetMapping("/active")
-    public Set<Room> getActiveRooms() {
-        Set<Room> response;
+    public List<Room> getActiveRooms() {
+        List<Room> response;
         logger.info("received get my rooms request");
 
         response = roomService.getActiveRooms();

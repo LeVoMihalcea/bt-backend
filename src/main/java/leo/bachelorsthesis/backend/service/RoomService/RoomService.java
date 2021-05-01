@@ -3,6 +3,7 @@ package leo.bachelorsthesis.backend.service.RoomService;
 import leo.bachelorsthesis.backend.domain.Room;
 import leo.bachelorsthesis.backend.domain.requests.JoinRoomRequest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public interface RoomService {
 
     boolean joinRoom(String id);
 
-    Set<Room> getActiveRooms();
+    List<Room> getActiveRooms();
 
     boolean deleteRoom(String id);
 

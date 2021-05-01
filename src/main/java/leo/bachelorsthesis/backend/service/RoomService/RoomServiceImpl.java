@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,13 +87,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Set<Room> getActiveRooms() {
+    public List<Room> getActiveRooms() {
         User user = getUser();
 
         Set<Room> rooms = user.getRoomsAdministrated();
         rooms.addAll(user.getRoomsJoined());
 
-        return rooms;
+        return rooms.stream().sorted(Comparator.comparing(Room::getName)).collect(Collectors.toList());
     }
 
     @Override
