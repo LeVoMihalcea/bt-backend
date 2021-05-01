@@ -9,6 +9,7 @@ import leo.bachelorsthesis.backend.error.exceptions.RoomNotFoundException;
 import leo.bachelorsthesis.backend.error.exceptions.UserNotFoundException;
 import leo.bachelorsthesis.backend.repository.RoomRepository;
 import leo.bachelorsthesis.backend.repository.UserRepository;
+import leo.bachelorsthesis.backend.service.EmailService.EmailService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,30 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public RoomServiceImpl(RoomRepository roomRepository, UserRepository userRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository, UserRepository userRepository, EmailService emailService) {
         this.roomRepository = roomRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     @Override
     public Optional<Room> generateRoom(Room room) {
         User user = getUser();
         room.setHost(user);
+        room.getRoomCalendarEntry().setRoom(room);
 
-        return Optional.of(roomRepository.save(room));
+        Optional<Room> savedRoom = Optional.of(roomRepository.save(room));
+
+        try{
+            emailService.sendCalendarInvite(user.getEmail(), room.getRoomCalendarEntry(), room);
+        }
+        catch (Exception ignored){
+
+        }
+
+        return savedRoom;
     }
 
     @Override
@@ -61,6 +74,13 @@ public class RoomServiceImpl implements RoomService {
 
         room.addUser(user);
         roomRepository.saveAndFlush(room);
+
+        try {
+            emailService.sendCalendarInvite(user.getEmail(), room.getRoomCalendarEntry(), room);
+        } catch (Exception ignored) {
+
+        }
+
         return true;
     }
 

@@ -1,8 +1,5 @@
 package leo.bachelorsthesis.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -48,6 +46,10 @@ public class Room {
 
     @OrderBy("email ASC")
     private Set<User> users;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_calendar_entry_id", referencedColumnName = "id")
+    private RoomCalendarEntry roomCalendarEntry;
 
     public Room(@NotNull(message = "The Room name cannot be empty!") String name,
                 @NotNull(message = "The Room type can't be empty!") String type,

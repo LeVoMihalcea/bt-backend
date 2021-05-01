@@ -143,6 +143,14 @@
 			<version>2.3.4.RELEASE</version>
 		</dependency>
 
+		<!--                   calendar                  -->
+		<dependency>
+			<groupId>org.mnode.ical4j</groupId>
+			<artifactId>ical4j</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
