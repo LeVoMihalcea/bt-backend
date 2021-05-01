@@ -4,7 +4,7 @@ stages {
 stage('Build'){
     steps{
         withMaven{
-            sh 'mvn clean package'
+            sh 'mvn clean package -DskipTests'
         }
     }
 }
