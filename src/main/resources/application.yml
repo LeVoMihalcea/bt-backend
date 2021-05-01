@@ -42,7 +42,7 @@ spring:
     username: webappbt@gmail.com
     password: yygcnjvxivmwokzj
 
-lifespanInHours: 24
+lifespanInHours: 2400
 secret: "some random string"
 tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
 empathyServerUrl: "https://bt-empathy.sudo.rocks"
