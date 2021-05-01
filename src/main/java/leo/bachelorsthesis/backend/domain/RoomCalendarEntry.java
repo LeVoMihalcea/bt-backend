@@ -1,5 +1,6 @@
 package leo.bachelorsthesis.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +24,8 @@ public class RoomCalendarEntry {
     private String id;
 
     @NotNull(message = "First Date Time cannot be null!")
-    @Column(name = "first_date_time", nullable = false)
     private LocalDateTime firstDateTime;
 
-    @NotNull(message = "Hours cannot be null")
     @Column(name = "hours", nullable = false)
     private int hours;
 
@@ -37,5 +36,6 @@ public class RoomCalendarEntry {
     private TimeUnit timeUnit;
 
     @OneToOne(mappedBy = "roomCalendarEntry")
+    @JsonIgnore
     private Room room;
 }
