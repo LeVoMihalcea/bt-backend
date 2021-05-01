@@ -26,13 +26,13 @@ public class RoomCalendarEntry {
     @NotNull(message = "First Date Time cannot be null!")
     private LocalDateTime firstDateTime;
 
-    @Column(name = "hours", nullable = false)
+    @Column(name = "hours")
     private int hours;
 
-    @Column(name = "repeat_every", nullable = false)
+    @Column(name = "repeat_every")
     private int repeatEvery;
 
-    @Column(name = "time_unit", nullable = false)
+    @Column(name = "time_unit")
     private TimeUnit timeUnit;
 
     @OneToOne(mappedBy = "roomCalendarEntry")
