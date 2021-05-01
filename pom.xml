@@ -135,8 +135,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-	</dependencies>
 
+		<!--                   email                      -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.3.4.RELEASE</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>

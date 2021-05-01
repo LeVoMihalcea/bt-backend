@@ -24,6 +24,24 @@ spring:
     dbcp2:
       test-while-idle: true
       test-on-borrow: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          port: 587
+          auth: true
+          starttls:
+            enable: true
+
+    username: webappbt@gmail.com
+    password: yygcnjvxivmwokzj
+
 lifespanInHours: 24
 secret: "some random string"
 tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
@@ -32,3 +50,4 @@ backendServerUrl: "https://bt-backend.sudo.rocks"
 frontendUrl: "https://bt-webapp.sudo.rocks"
 frontendUrlBackup: "https://bt-webapp.sudo.rocks"
 staticFilePath: ""
+

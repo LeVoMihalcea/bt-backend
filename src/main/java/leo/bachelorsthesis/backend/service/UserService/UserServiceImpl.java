@@ -7,6 +7,7 @@ import leo.bachelorsthesis.backend.domain.dtos.UserDto;
 import leo.bachelorsthesis.backend.domain.responses.UserRegistrationResponse;
 import leo.bachelorsthesis.backend.error.exceptions.UserNotFoundException;
 import leo.bachelorsthesis.backend.repository.UserRepository;
+import leo.bachelorsthesis.backend.service.EmailService.EmailService;
 import leo.bachelorsthesis.backend.service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,9 +23,12 @@ public class UserServiceImpl implements UserService {
 
     private final DtoBuilder dtoBuilder;
 
-    public UserServiceImpl(UserRepository userRepository, DtoBuilder dtoBuilder) {
+    private final EmailService emailService;
+
+    public UserServiceImpl(UserRepository userRepository, DtoBuilder dtoBuilder, EmailService emailService) {
         this.userRepository = userRepository;
         this.dtoBuilder = dtoBuilder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -38,8 +42,6 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 
-        List<User> leo = userRepository.findByFirstName("Leo");
-
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
@@ -47,6 +49,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
 
         User savedUser = userRepository.save(user);
+
+        emailService.sendRegistrationMessage(
+                userDto.getEmail(),
+                userDto.getFirstName() + " " + userDto.getLastName()
+        );
 
         return dtoBuilder.buildUserRegistrationResponse(savedUser);
     }
