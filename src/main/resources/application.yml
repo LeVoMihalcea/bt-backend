@@ -48,6 +48,5 @@ tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
 empathyServerUrl: "https://bt-empathy.sudo.rocks"
 backendServerUrl: "https://bt-backend.sudo.rocks"
 frontendUrl: "https://bt-webapp.sudo.rocks"
-frontendUrlBackup: "https://bt-webapp.sudo.rocks"
 staticFilePath: ""
 

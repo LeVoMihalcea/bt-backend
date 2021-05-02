@@ -11,10 +11,6 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-    @Value("${frontendUrl}")
-    private String frontendUrl;
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
@@ -23,8 +19,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl);
-        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl).withSockJS();
+        registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks");
+        registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks").withSockJS();
     }
 
     @Override
