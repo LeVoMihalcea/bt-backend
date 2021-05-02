@@ -31,9 +31,17 @@ public class UserController {
     }
 
     @GetMapping("{email}")
-    public User getUserDetails(@PathVariable String email){
+    public User getUserDetailsByEmail(@PathVariable String email){
         logger.info("received get user details request: {}", email);
         User user = this.userService.findByEmail(email);
+        logger.info("registration done: {}", user);
+        return user;
+    }
+
+    @GetMapping("/id/{id}")
+    public User getUserDetailsById(@PathVariable int id){
+        logger.info("received get user details request: {}", id);
+        User user = this.userService.getUserById(id);
         logger.info("registration done: {}", user);
         return user;
     }

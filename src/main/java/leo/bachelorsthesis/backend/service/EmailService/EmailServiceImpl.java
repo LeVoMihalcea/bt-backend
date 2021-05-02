@@ -129,7 +129,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("webappbt@gmail.com");
+        helper.setFrom("BT WebApp");
         helper.setTo(to);
         helper.setSubject("Joined room " + room.getName());
         helper.setText("Click here to join the meeting:\nhttps://bt-webapp.sudo.rocks/room/" + room.getId());
