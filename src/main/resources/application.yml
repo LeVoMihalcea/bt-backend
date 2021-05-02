@@ -30,7 +30,7 @@ spring:
     protocol: smtp
     properties:
       mail:
-        debug: true
+        debug: false
         transport:
           protocol: smtp
         smtp:
