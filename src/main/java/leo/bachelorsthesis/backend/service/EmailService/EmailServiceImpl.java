@@ -14,6 +14,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
@@ -129,7 +130,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("BT WebApp");
+        helper.setFrom("webappbt@gmail.com");
         helper.setTo(to);
         helper.setSubject("Joined room " + room.getName());
         helper.setText("Click here to join the meeting:\nhttps://bt-webapp.sudo.rocks/room/" + room.getId());
