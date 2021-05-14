@@ -1,15 +1,19 @@
 package leo.bachelorsthesis.backend.domain.dtos.empathy;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
+@ToString
 public class EmpathyResponseDTO {
-    private int confusion;
+    private int anger;
+    private int contempt;
+    private int disgust;
+    private int fear;
     private int happiness;
+    private int neutral;
     private int sadness;
+    private int surprise;
 }
