@@ -8,12 +8,12 @@ import lombok.*;
 @Setter
 @ToString
 public class EmpathyResponseDTO {
-    private int anger;
-    private int contempt;
-    private int disgust;
-    private int fear;
-    private int happiness;
-    private int neutral;
-    private int sadness;
-    private int surprise;
+    private float anger;
+    private float contempt;
+    private float disgust;
+    private float fear;
+    private float happiness;
+    private float neutral;
+    private float sadness;
+    private float surprise;
 }
