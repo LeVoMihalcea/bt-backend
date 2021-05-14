@@ -38,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
 
         String decodedImageName = decodeImage(imageUri);
         EmpathyResponseDTO empathyResponseDTO =
-                empathyClient.sendImageToEmpathy(backendServerUrl + "/" + decodedImageName);
+                empathyClient.sendImageToEmpathy(backendServerUrl + "/image/" + decodedImageName);
 
         message = Mapper.mapEmpathyResponseToJson(empathyResponseDTO);
 
