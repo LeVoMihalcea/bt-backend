@@ -5,7 +5,7 @@ import feign.RequestLine;
 import leo.bachelorsthesis.backend.domain.dtos.empathy.EmpathyResponseDTO;
 
 public interface EmpathyClient {
-    @RequestLine("POST /")
+    @RequestLine("POST /emotion")
     @Headers("Content-Type: application/json")
     EmpathyResponseDTO sendImageToEmpathy(String imageUrl);
 }
