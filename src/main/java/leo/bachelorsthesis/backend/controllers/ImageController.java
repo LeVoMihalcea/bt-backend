@@ -28,7 +28,7 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @MessageMapping("/analyse")
+    @PostMapping("/analyse")
     @SendTo("/topic/AI-responses")
     public String analysePicture(@RequestBody String imageUri) {
         String response = "";
