@@ -16,12 +16,18 @@ public class Mapper {
         Map<String, String> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        map.put("confusion", String.valueOf(empathyResponse.getConfusion()));
+        map.put("anger", String.valueOf(empathyResponse.getAnger()));
+        map.put("contempt", String.valueOf(empathyResponse.getContempt()));
+        map.put("disgust", String.valueOf(empathyResponse.getDisgust()));
+        map.put("fear", String.valueOf(empathyResponse.getFear()));
         map.put("happiness", String.valueOf(empathyResponse.getHappiness()));
+        map.put("neutral", String.valueOf(empathyResponse.getNeutral()));
         map.put("sadness", String.valueOf(empathyResponse.getSadness()));
-        map.put("message", getDominantTrait(empathyResponse));
-        map.put("maxValue", String.valueOf(Collections.max(List
-                .of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()))));
+        map.put("surprise", String.valueOf(empathyResponse.getSurprise()));
+        
+//        map.put("message", getDominantTrait(empathyResponse));
+//        map.put("maxValue", String.valueOf(Collections.max(List
+//                .of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()))));
 
         try {
             return objectMapper.writeValueAsString(map);
@@ -30,13 +36,13 @@ public class Mapper {
         }
     }
 
-    private static String getDominantTrait(EmpathyResponseDTO empathyResponse) {
-        Integer max = Collections.max(
-                List.of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()));
-        if(empathyResponse.getConfusion() == max)
-            return ImageConstants.CONFUSION_IS_DOMINANT;
-        if(empathyResponse.getHappiness() == max)
-            return ImageConstants.HAPPINESS_IS_DOMINANT;
-        return ImageConstants.SADNESS_IS_DOMINANT;
-    }
+//    private static String getDominantTrait(EmpathyResponseDTO empathyResponse) {
+//        Integer max = Collections.max(
+//                List.of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()));
+//        if(empathyResponse.getConfusion() == max)
+//            return ImageConstants.CONFUSION_IS_DOMINANT;
+//        if(empathyResponse.getHappiness() == max)
+//            return ImageConstants.HAPPINESS_IS_DOMINANT;
+//        return ImageConstants.SADNESS_IS_DOMINANT;
+//    }
 }
