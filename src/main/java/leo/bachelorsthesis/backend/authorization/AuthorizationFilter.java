@@ -3,6 +3,7 @@ package leo.bachelorsthesis.backend.authorization;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 import leo.bachelorsthesis.backend.error.exceptions.APIAuthenticationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    private final String secret;
+    @Value("${secret}")
+    private String secret;
 
     public AuthorizationFilter(AuthenticationManager authenticationManager, String secret) {
         super(authenticationManager);
-        this.secret = secret;
     }
     
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

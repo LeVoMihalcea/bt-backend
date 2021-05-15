@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    consul:
+      host: https://bt-consul.sudo.rocks
+      port: 443

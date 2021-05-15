@@ -1,15 +1,11 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bachelors-thesis
-    username: postgres
-    password: admin
 tokenServerUrl: "http://localhost:19575"
 backendServerUrl: "http://localhost:19580"
 staticFilePath: "images/"
 empathyServerUrl: "http://localhost:5000"
 frontendUrl: "http://localhost:4200"
-frontendUrlBackup: "http://localhost:4200"
-
 
 feign:
   client:

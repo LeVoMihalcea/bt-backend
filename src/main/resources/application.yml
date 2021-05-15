@@ -14,8 +14,6 @@ spring:
     open-in-view: true
   datasource:
     url: jdbc:postgresql://postgres:5432/bachelors-thesis
-    username: postgres
-    password: admin
     platform: postgres
     hikari:
       max-lifetime: 300000
@@ -39,11 +37,6 @@ spring:
           starttls:
             enable: true
 
-    username: webappbt@gmail.com
-    password: yygcnjvxivmwokzj
-
-lifespanInHours: 168
-secret: "some random string"
 tokenServerUrl: "https://bt-tokenizer.sudo.rocks"
 empathyServerUrl: "https://bt-empathy.sudo.rocks"
 backendServerUrl: "https://bt-backend.sudo.rocks"

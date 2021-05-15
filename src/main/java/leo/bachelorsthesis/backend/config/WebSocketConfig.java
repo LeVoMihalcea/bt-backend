@@ -22,10 +22,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks");
         registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks").withSockJS();
     }
-
-    @Override
-    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-        registry.setMessageSizeLimit(Integer.MAX_VALUE);
-        registry.setSendBufferSizeLimit(Integer.MAX_VALUE);
-    }
 }

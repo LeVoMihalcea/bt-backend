@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: bt-backend
+  cloud:
+    consul:
+      host: consul
+      port: 8500
+      config:
+        enabled: true
+        defaultContext: bt-backend
+        data-key: azure-enabled
+        profileSeparator: '::'
+        format: key_value
+        watch:
+          enabled: true
+          delay: 1000
+        prefixes: config
+
