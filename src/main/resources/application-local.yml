@@ -4,7 +4,7 @@ spring:
 tokenServerUrl: "http://localhost:19575"
 backendServerUrl: "http://localhost:19580"
 staticFilePath: "images/"
-empathyServerUrl: "http://localhost:5000"
+empathyServerUrl: "http://localhost:8080"
 frontendUrl: "http://localhost:4200"
 
 feign:

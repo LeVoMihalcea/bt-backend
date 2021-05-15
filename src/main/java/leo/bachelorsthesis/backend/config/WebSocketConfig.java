@@ -7,10 +7,13 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Value("${frontendUrl}")
+    private String frontendUrl;
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
@@ -19,7 +22,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks");
-        registry.addEndpoint("/analyse").setAllowedOrigins("http://localhost:4200", "https://bt-webapp.sudo.rocks").withSockJS();
+        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl);
+        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl).withSockJS();
+        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl);
+        registry.addEndpoint("/analyse").setAllowedOrigins(frontendUrl).withSockJS();
+    }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+        registry.setMessageSizeLimit(Integer.MAX_VALUE);
+        registry.setSendBufferSizeLimit(Integer.MAX_VALUE);
     }
 }
