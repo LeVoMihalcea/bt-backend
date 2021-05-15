@@ -6,28 +6,34 @@ import leo.bachelorsthesis.backend.constants.ImageConstants;
 import leo.bachelorsthesis.backend.domain.dtos.empathy.EmpathyResponseDTO;
 import leo.bachelorsthesis.backend.error.exceptions.ApiJsonError;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Mapper {
     public static String mapEmpathyResponseToJson(EmpathyResponseDTO empathyResponse) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        map.put("anger", String.valueOf(empathyResponse.getAnger()));
-        map.put("contempt", String.valueOf(empathyResponse.getContempt()));
-        map.put("disgust", String.valueOf(empathyResponse.getDisgust()));
-        map.put("fear", String.valueOf(empathyResponse.getFear()));
-        map.put("happiness", String.valueOf(empathyResponse.getHappiness()));
-        map.put("neutral", String.valueOf(empathyResponse.getNeutral()));
-        map.put("sadness", String.valueOf(empathyResponse.getSadness()));
-        map.put("surprise", String.valueOf(empathyResponse.getSurprise()));
+        map.put("anger", empathyResponse.getAnger());
+        map.put("contempt", empathyResponse.getContempt());
+        map.put("disgust", empathyResponse.getDisgust());
+        map.put("fear", empathyResponse.getFear());
+        map.put("happiness", empathyResponse.getHappiness());
+        map.put("neutral", empathyResponse.getNeutral());
+        map.put("sadness", empathyResponse.getSadness());
+        map.put("surprise", empathyResponse.getSurprise());
+
+        float max = -1;
+        String maxKey = "neutral";
+        for(Map.Entry<String, Object> entry: map.entrySet()){
+            if((Float)entry.getValue() > max){
+                maxKey = entry.getKey();
+                max = (Float) entry.getValue();
+            }
+        }
         
-//        map.put("message", getDominantTrait(empathyResponse));
-//        map.put("maxValue", String.valueOf(Collections.max(List
-//                .of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()))));
+        map.put("message", getDominantTrait(maxKey));
+        map.put("dominantEmotion", maxKey);
+        map.put("maxValue", map.get(maxKey));
 
         try {
             return objectMapper.writeValueAsString(map);
@@ -36,13 +42,22 @@ public class Mapper {
         }
     }
 
-//    private static String getDominantTrait(EmpathyResponseDTO empathyResponse) {
-//        Integer max = Collections.max(
-//                List.of(empathyResponse.getConfusion(), empathyResponse.getHappiness(), empathyResponse.getSadness()));
-//        if(empathyResponse.getConfusion() == max)
-//            return ImageConstants.CONFUSION_IS_DOMINANT;
-//        if(empathyResponse.getHappiness() == max)
-//            return ImageConstants.HAPPINESS_IS_DOMINANT;
-//        return ImageConstants.SADNESS_IS_DOMINANT;
-//    }
+    private static String getDominantTrait(String maxKey) {
+        return getEmotionMap().get(maxKey);
+    }
+
+    private static Map<String, String> getEmotionMap() {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("anger", ImageConstants.ANGER_IS_DOMINANT);
+        map.put("contempt", ImageConstants.CONTEMPT_IS_DOMINANT);
+        map.put("disgust", ImageConstants.DISGUST_IS_DOMINANT);
+        map.put("fear", ImageConstants.FEAR_IS_DOMINANT);
+        map.put("happiness", ImageConstants.HAPPINESS_IS_DOMINANT);
+        map.put("neutral", ImageConstants.NEUTRAL_IS_DOMINANT);
+        map.put("sadness", ImageConstants.SADNESS_IS_DOMINANT);
+        map.put("surprise", ImageConstants.SURPRISE_IS_DOMINANT);
+
+        return map;
+    }
 }

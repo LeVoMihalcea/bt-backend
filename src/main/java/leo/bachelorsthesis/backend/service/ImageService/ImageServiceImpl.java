@@ -34,15 +34,21 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String analysePicture(String imageUri) {
-        String message = "";
+        String message;
 
         String decodedImageName = decodeImage(imageUri);
         EmpathyResponseDTO empathyResponseDTO =
                 empathyClient.sendImageToEmpathy(backendServerUrl + "/image/" + decodedImageName);
+        deleteImage(imageUri);
 
         message = Mapper.mapEmpathyResponseToJson(empathyResponseDTO);
 
         return message;
+    }
+
+    private void deleteImage(String imageUri) {
+        File myObj = new File(imageUri);
+        myObj.delete();
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String decodeImage(String imageUri) {
         byte[] imagedata = DatatypeConverter.parseBase64Binary(imageUri.substring(imageUri.indexOf(",") + 1));
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
         try {
             bufferedImage = ImageIO.read(new ByteArrayInputStream(imagedata));
             String imageName = UUID.randomUUID() + ".png";
