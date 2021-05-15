@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -25,11 +26,16 @@ public class ImageController {
     @Value("${staticFilePath}")
     private String staticFilePath;
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
+
+    private final SimpMessageSendingOperations template ;
+
+    public ImageController(ImageService imageService, SimpMessageSendingOperations template) {
+        this.imageService = imageService;
+        this.template = template;
+    }
 
     @PostMapping("/analyse")
-    @SendTo("/topic/AI-responses")
     public String analysePicture(@RequestBody String imageUri) {
         String response = "";
         logger.info("received analyse picture request");
@@ -37,6 +43,8 @@ public class ImageController {
         response = imageService.analysePicture(imageUri);
 
         logger.info("analyse picture done: {}", response);
+
+        template.convertAndSend("/topic/messages", response);
         return response;
     }
 
