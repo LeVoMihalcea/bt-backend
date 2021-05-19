@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -22,7 +23,7 @@ public class RoomController {
     private RoomService roomService;
 
     @PostMapping("/create")
-    public GenerateRoomResponse generateRoom(@RequestBody Room room) {
+    public GenerateRoomResponse generateRoom(@RequestBody @Valid Room room) {
         GenerateRoomResponse response = new GenerateRoomResponse();
         logger.info("received generate room request: {}", room);
 

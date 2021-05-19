@@ -1,6 +1,8 @@
 package leo.bachelorsthesis.backend.error;
 
+import leo.bachelorsthesis.backend.constants.GeneralConstants;
 import leo.bachelorsthesis.backend.constants.UserConstants;
+import leo.bachelorsthesis.backend.constants.ValidationConstants;
 import leo.bachelorsthesis.backend.error.errors.ApiError;
 import leo.bachelorsthesis.backend.error.errors.ApiRegistrationError;
 import leo.bachelorsthesis.backend.error.errors.ApiSubError;
@@ -45,8 +47,8 @@ public class RestExceptionHandler {
         return buildResponseEntity(
                 new ApiError(
                         HttpStatus.BAD_REQUEST,
-                        UserConstants.REGISTRATION_ERROR_MESSAGE,
-                        "registration_exception",
+                        GeneralConstants.SOMETHING_WENT_WRONG,
+                        GeneralConstants.SOMETHING_WENT_WRONG,
                         apiSubErrorList
                 )
         );
@@ -74,7 +76,7 @@ public class RestExceptionHandler {
         return buildResponseEntity(
                 new ApiError(
                         HttpStatus.BAD_REQUEST,
-                        UserConstants.REGISTRATION_ERROR_MESSAGE,
+                        ValidationConstants.VALIDATION_ERROR,
                         "validation_exception",
                         new ArrayList<>(apiSubErrorList)
                 )
