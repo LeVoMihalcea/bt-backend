@@ -6,24 +6,20 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.parameter.Cn;
-import net.fortuna.ical4j.model.parameter.Role;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.util.UidGenerator;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.time.LocalDate;
+import java.net.SocketException;
 import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 
@@ -53,49 +49,21 @@ public class EmailServiceImpl implements EmailService {
         TimeZone timezone = registry.getTimeZone("Europe/Bucharest");
         VTimeZone tz = timezone.getVTimeZone();
 
+        String recurrencePattern = getRecurrencePattern(roomCalendarEntry);
 
-        String recurrencePattern = "FREQ=" + roomCalendarEntry.getTimeUnit()
-                + ";INTERVAL=" + roomCalendarEntry.getRepeatEvery();
-
-        java.util.Calendar startDate = new GregorianCalendar();
-        startDate.setTimeZone(timezone);
-        startDate.set(java.util.Calendar.MONTH, roomCalendarEntry.getFirstDateTime().getMonthValue() - 1);
-        startDate.set(java.util.Calendar.DAY_OF_MONTH, roomCalendarEntry.getFirstDateTime().getDayOfMonth());
-        startDate.set(java.util.Calendar.YEAR, roomCalendarEntry.getFirstDateTime().getYear());
-        startDate.set(java.util.Calendar.HOUR_OF_DAY, roomCalendarEntry.getFirstDateTime().getHour());
-        startDate.set(java.util.Calendar.MINUTE, roomCalendarEntry.getFirstDateTime().getMinute());
-        startDate.set(java.util.Calendar.SECOND, 0);
+        java.util.Calendar startDate = mapDate(timezone, roomCalendarEntry.getFirstDateTime());
 
         LocalDateTime endDateTime = roomCalendarEntry.getFirstDateTime().plusHours(roomCalendarEntry.getHours());
 
-        java.util.Calendar endDate = new GregorianCalendar();
-        endDate.setTimeZone(timezone);
-        endDate.set(java.util.Calendar.MONTH, endDateTime.getMonthValue() - 1);
-        endDate.set(java.util.Calendar.DAY_OF_MONTH, endDateTime.getDayOfMonth());
-        endDate.set(java.util.Calendar.YEAR, endDateTime.getYear());
-        endDate.set(java.util.Calendar.HOUR_OF_DAY, endDateTime.getHour());
-        endDate.set(java.util.Calendar.MINUTE, endDateTime.getMinute());
-        endDate.set(java.util.Calendar.SECOND, 0);
+        java.util.Calendar endDate = mapDate(timezone, endDateTime);
 
-        // Create the event
-        String eventName = room.getName();
-        DateTime start = new DateTime(startDate.getTime());
-        DateTime end = new DateTime(endDate.getTime());
-        VEvent meeting = new VEvent(start, end, eventName);
-
-        // add timezone info..
+        VEvent meeting = createVEvent(room, startDate, endDate);
         meeting.getProperties().add(tz.getTimeZoneId());
 
-        // generate unique identifier..
-        UidGenerator ug = new UidGenerator("uidGen");
-        Uid uid = ug.generateUid();
-        meeting.getProperties().add(uid);
+        setUniqueIdentifier(meeting);
 
         // Create a calendar
-        net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
-        icsCalendar.getProperties().add(new ProdId("-//Events Calendar//iCal4j 1.0//EN"));
-        icsCalendar.getProperties().add(CalScale.GREGORIAN);
-        icsCalendar.getProperties().add(Version.VERSION_2_0);
+        Calendar icsCalendar = createCalendar();
 
         if(roomCalendarEntry.getRepeatEvery() != 0){
             meeting.getProperties().add(new RRule(recurrencePattern));
@@ -107,6 +75,27 @@ public class EmailServiceImpl implements EmailService {
         // Add the event and print
         icsCalendar.getComponents().add(meeting);
 
+        createCalendarFile(icsCalendar);
+
+        sendEmail(to, room);
+    }
+
+    private Calendar createCalendar() {
+        Calendar icsCalendar = new Calendar();
+        icsCalendar.getProperties().add(new ProdId("-//Events Calendar//iCal4j 1.0//EN"));
+        icsCalendar.getProperties().add(CalScale.GREGORIAN);
+        icsCalendar.getProperties().add(Version.VERSION_2_0);
+        return icsCalendar;
+    }
+
+    private void setUniqueIdentifier(VEvent meeting) throws SocketException {
+        // generate unique identifier..
+        UidGenerator ug = new UidGenerator("uidGen");
+        Uid uid = ug.generateUid();
+        meeting.getProperties().add(uid);
+    }
+
+    private void createCalendarFile(Calendar icsCalendar) {
         String filePath = "calendar.ics";
         FileOutputStream fout = null;
         try {
@@ -126,7 +115,9 @@ public class EmailServiceImpl implements EmailService {
                 }
             }
         }
+    }
 
+    private void sendEmail(String to, Room room) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -140,5 +131,30 @@ public class EmailServiceImpl implements EmailService {
         helper.addAttachment("calendar.ics", file);
 
         emailSender.send(message);
+    }
+
+    private VEvent createVEvent(Room room, java.util.Calendar startDate, java.util.Calendar endDate) {
+        String eventName = room.getName();
+        DateTime start = new DateTime(startDate.getTime());
+        DateTime end = new DateTime(endDate.getTime());
+        VEvent meeting = new VEvent(start, end, eventName);
+        return meeting;
+    }
+
+    private java.util.Calendar mapDate(TimeZone timezone, LocalDateTime firstDateTime) {
+        java.util.Calendar startDate = new GregorianCalendar();
+        startDate.setTimeZone(timezone);
+        startDate.set(java.util.Calendar.MONTH, firstDateTime.getMonthValue() - 1);
+        startDate.set(java.util.Calendar.DAY_OF_MONTH, firstDateTime.getDayOfMonth());
+        startDate.set(java.util.Calendar.YEAR, firstDateTime.getYear());
+        startDate.set(java.util.Calendar.HOUR_OF_DAY, firstDateTime.getHour());
+        startDate.set(java.util.Calendar.MINUTE, firstDateTime.getMinute());
+        startDate.set(java.util.Calendar.SECOND, 0);
+        return startDate;
+    }
+
+    private String getRecurrencePattern(RoomCalendarEntry roomCalendarEntry) {
+        return "FREQ=" + roomCalendarEntry.getTimeUnit()
+                + ";INTERVAL=" + roomCalendarEntry.getRepeatEvery();
     }
 }

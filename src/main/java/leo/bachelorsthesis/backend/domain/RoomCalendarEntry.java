@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.fortuna.ical4j.model.TimeZone;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class RoomCalendarEntry {
 
     @Column(name = "time_unit")
     private TimeUnit timeUnit;
+
+    @Column(name = "time_zone")
+    private String timeZone;
 
     @OneToOne(mappedBy = "roomCalendarEntry")
     @JsonIgnore

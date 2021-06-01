@@ -10,14 +10,15 @@ import leo.bachelorsthesis.backend.error.exceptions.UserNotFoundException;
 import leo.bachelorsthesis.backend.repository.RoomRepository;
 import leo.bachelorsthesis.backend.repository.UserRepository;
 import leo.bachelorsthesis.backend.service.EmailService.EmailService;
+import net.fortuna.ical4j.model.TimeZone;
+import net.fortuna.ical4j.model.TimeZoneRegistry;
+import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
+import net.fortuna.ical4j.model.component.VTimeZone;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,9 @@ public class RoomServiceImpl implements RoomService {
     public Optional<Room> generateRoom(Room room) {
         User user = getUser();
         room.setHost(user);
+
+        addTimezoneIfScheduledRoom(room);
+
         room.getRoomCalendarEntry().setRoom(room);
 
         Optional<Room> savedRoom = Optional.of(roomRepository.save(room));
@@ -49,6 +53,14 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return savedRoom;
+    }
+
+    private void addTimezoneIfScheduledRoom(Room room) {
+        if(Objects.nonNull(room.getRoomCalendarEntry())){
+            TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+            TimeZone timezone = registry.getTimeZone("Europe/Bucharest");
+            room.getRoomCalendarEntry().getFirstDateTime().atZone(timezone.toZoneId());
+        }
     }
 
     @Override
